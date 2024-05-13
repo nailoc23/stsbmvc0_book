@@ -335,7 +335,9 @@
    				if(isbn=='') { 	alert('ISBN을 입력하세요!');	return;		}
    				if(author=='') { 	alert('저자명을 입력하세요!');	return;		}
    				if(price=='') { 	alert('가격을 입력하세요!');	return;		}
-   				
+   				if(publisher=='') { publisher='없음'; }
+   				if(stock=='') { stock=0; }
+   					
    				ok=confirm("등록하시겠습니까?");
    				if(ok==true) {
    					
@@ -346,11 +348,18 @@
    							    "author" : author, "publisher" : publisher,
    							    "price" : price, "stock" : stock},
    						datatype: 'json',
-   						success: function (data, status, xhr) {
-   							console.log(data)
+   						success: function (response, status, xhr) {
+   							console.log(response)
+   							var data = JSON.parse(response);
+	   						console.log('서버응답값:'+ data.result);	
+	   						if( data.result == 1 ) {
+	   							$('#editModal').modal('hide');
+	   							location.reload();	
+	   						}
    						},
    						error: function (xhr, status, error) {
-   							console.log(error)
+   							console.log(error);
+   							$('#editModal').modal('hide');
    						}
    		   				
    					

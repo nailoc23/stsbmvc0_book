@@ -11,8 +11,9 @@ import jakarta.persistence.Table;
 public class BookVo {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO) 
-	private long bkid; 
+	//@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // MySQL에서 자동 증가를 위한 설정
+	private int bkid; 
 	private String title;
 	private String isbn;  
 	private String author;
@@ -20,10 +21,10 @@ public class BookVo {
     private float price; 
     private int stock;
     
-	public long getBkid() {
+	public int getBkid() {
 		return bkid;
 	}
-	public void setBkid(long bkid) {
+	public void setBkid(int bkid) {
 		this.bkid = bkid;
 	}
 	public String getTitle() {

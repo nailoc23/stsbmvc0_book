@@ -37,19 +37,18 @@ public class BookController {
 	public @ResponseBody ResponseEntity<Map> 
 	bookreg (BookVo bookvo) throws JsonProcessingException{
 		
-		try {
-            //float numericValue = Float.parseFloat(bookvo.getPrice());
-            // 숫자형으로 변환 가능한 경우, 여기서 처리
-        } catch (NumberFormatException e) {
-            // 숫자형으로 변환 불가능한 경우, 예외 처리
-        }
-		
 		System.out.println("도서명: " + bookvo.getTitle() );
+		System.out.println("출판사명: " + bookvo.getPublisher() );
 		
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("userid", "amy");
-		map.put("address", "seoul");
-		
+		try {
+			bookService.regBook(bookvo);
+			map.put("result", "1");
+		}catch(Exception e) {
+			System.out.println("regBook error: " + e.getMessage() );
+			map.put("result", "0");
+		}
+
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(map);
 
 	}

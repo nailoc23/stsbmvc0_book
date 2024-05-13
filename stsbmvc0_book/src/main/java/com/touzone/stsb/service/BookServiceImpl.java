@@ -21,4 +21,11 @@ public class BookServiceImpl implements BookService {
 		return result;
 	}
 
+	@Override
+	public void regBook(BookVo bookvo) {
+		// TODO Auto-generated method stub
+		bookRepository.save(bookvo);
+		
+	}
+
 }
