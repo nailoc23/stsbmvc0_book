@@ -115,10 +115,14 @@
                <td>${item.title }</td>
                <td>${item.price }</td>
                <td>${item.stock }</td>
+               <td style="display:none;">${item.author }</td>
+               <td style="display:none;">${item.isbn }</td>
+               <td style="display:none;">${item.publisher }</td>
+               
                <td>
                   <!-- <button type="button" class="btn btn-primary btn-sm" onclick="viewBook()">보기</button> -->
                   <button type="button" class="btn btn-primary btn-sm updateBtn">수정</button>
-                  <button type="button" class="btn btn-danger btn-sm" onclick="delBook()">삭제</button>
+                  <button type="button" class="btn btn-danger btn-sm" onclick="delBook(${item.bkid })">삭제</button>
                </td>
             </tr>
             </c:forEach>
@@ -145,7 +149,7 @@
       <div class="modal-dialog" role="document">
          <div class="modal-content">
             <div class="modal-header">
-               <h5 class="modal-title" id="editModalLabel">상품 수정</h5>
+               <h5 class="modal-title" id="editModalLabel">도서 수정</h5>
                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                </button>
@@ -155,17 +159,37 @@
                <form>
                	  <!-- 도서번호 숨김처리 -->
                	  <input type="hidden" id="editBkid">
-                  <div class="form-group">
-                     <label for="editProductName">상품명:</label>
+                  <div class="form-row">
+                     <label for="editProductName">도서명:</label>
                      <input type="text" class="form-control" id="editTitle">
                   </div>
-                  <div class="form-group">
+                  <div class="form-row">
+	                  <div class="form-group col-md-12">
+	                     <label for="editIsbn">ISBN:</label>
+	                     <input type="text" class="form-control" id="editIsbn">
+	                  </div>
+	               </div>
+                  <div class="form-row">
+	                  <div class="form-group col-md-6">
+	                     <label for="editAuthor">저자:</label>
+	                     <input type="text" class="form-control" id="editAuthor">
+	                  </div>
+	                  <div class="form-group col-md-6">
+	                     <label for="editPublisher">출판사:</label>
+	                     <input type="text" class="form-control" id="editPublisher">
+	                  </div>
+	               </div>
+	               
+                  <div class="form-row">
+                  	 <div class="form-group col-md-6">
                      <label for="editPrice">가격:</label>
                      <input type="text" class="form-control" id="editPrice">
-                  </div>
-                  <div class="form-group">
-                     <label for="editStock">재고:</label>
-                     <input type="number" class="form-control" id="editStock">
+                  	 </div>
+                  	 
+                  	 <div class="form-group col-md-6">
+	                     <label for="editStock">재고:</label>
+	                     <input type="number" class="form-control" id="editStock">
+	                 </div>
                   </div>
                </form>
             </div>
@@ -188,7 +212,7 @@
 	            </button>
 	         </div>
 	         <div class="modal-body">
-	            <!-- 수정 내용을 입력하는 폼 -->
+	            <!-- 추가 내용을 입력하는 폼 -->
 	            <form>
 	               
 	               <div class="form-row">
@@ -256,15 +280,25 @@
    				$title = $row.find('td:eq(0)').text();
    				$price = $row.find('td:eq(1)').text();
    				$stock = $row.find('td:eq(2)').text();
+   				$autor = $row.find('td:eq(3)').text();
+   				$autor = $row.find('td:eq(3)').text();
+   				$isbn = $row.find('td:eq(4)').text();
+   				$publisher = $row.find('td:eq(5)').text();
    	   			console.log($id);
    	   			console.log($title);
    	   			console.log($price);
    	   			console.log($stock);
+   	   			console.log($isbn);
+   	   			console.log($publisher);
+   	   			
    	   			$('#editBkid').val($id);
    	   			$('#editTitle').val($title);
    	   			$('#editPrice').val($price);
    	   			$('#editStock').val($stock);
-   	   	
+   	   			$('#editAuthor').val($autor);
+   	   			$('#editIsbn').val($isbn);
+   	   			$('#editPublisher').val($publisher);
+
    	   			$('#editModal').modal('show');
    	   			   	   			   	
    	   		});
@@ -275,22 +309,32 @@
    				var title = $('#editTitle').val();
    				var price = $('#editPrice').val();
    				var stock = $('#editStock').val();
+   				var author = $('#editAuthor').val();
+   				var isbn = $('#editIsbn').val();
+   				var publisher = $('#editPublisher').val();
    				console.log('도서번호:'+ id);
    				console.log('도서명:'+ title);
    				console.log('가격:'+ price);
    				console.log('재고량:'+ stock);
+   				console.log('저자명:'+ author);
+   				console.log('isbn:'+ isbn);
+   				console.log('출판사:'+ publisher);
+   				
    				ok=confirm("정말로 수정하시겠습니까?");
    				if(ok==true) {
    					
    					$.ajax({
-   						url: 'book_modpop.jsp',
+   						url: 'bookmod',
    						method: 'POST',
    						data: { "bkid" : id, "title" : title, 
-   							    "price" : price, "stock" : stock},
+   							    "price" : price, "stock" : stock,
+   							    "author" : author, "publisher" : publisher,
+   							    "isbn" : isbn },
    						datatype: 'json',
    		   				success : function(response){ 
    		   					console.log(response);
-   		   					var data = JSON.parse(response);
+   		   					//var data = JSON.parse(response);
+   		   					var data = response;
 	   						console.log('서버응답값:'+ data.result);	
 	   						if( data.result == 1 ) {
 	   							$('#editModal').modal('hide');
@@ -353,13 +397,13 @@
    							var data = JSON.parse(response);
 	   						console.log('서버응답값:'+ data.result);	
 	   						if( data.result == 1 ) {
-	   							$('#editModal').modal('hide');
+	   							$('#regModal').modal('hide');
 	   							location.reload();	
 	   						}
    						},
    						error: function (xhr, status, error) {
    							console.log(error);
-   							$('#editModal').modal('hide');
+   							$('#regModal').modal('hide');
    						}
    		   				
    					
@@ -377,17 +421,17 @@
    		
    		function delBook(id) {
    			console.log("파라미터값:"+ id);
-   			ok=confirm("정말로 삭제하시겠습니까?");
+   			ok=confirm(id+"번 도서를 삭제하시겠습니까?");
    			if(ok==true) {
 	   			$.ajax({
-	   				url: 'book_delpro.jsp',
+	   				url: 'bookdel',
 	   				method: 'POST',
 	   				data: {bkid: id},
 	   				datatype: 'json',
-	   				success : function(response){
+	   				success: function (response, status, xhr) {
 	   					console.log('응답결과:'+ response);
-	   					var data = JSON.parse(response);
-	   					console.log('서버응답값:'+ data.result);	
+	   					var data = response;
+   						console.log('서버응답값:'+ data.result);	
 	   					if( data.result == 1 ) {
 	   						location.reload();	
 	   					}	

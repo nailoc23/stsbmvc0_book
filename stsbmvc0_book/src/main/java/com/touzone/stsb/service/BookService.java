@@ -8,5 +8,8 @@ public interface BookService {
 	
 	List<BookVo> getBookList();
 	void regBook(BookVo bookvo);
+	void delBook(int bkid);
+	void updateBook(BookVo bookvo);
+	
 
 }
