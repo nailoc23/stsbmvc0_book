@@ -16,7 +16,8 @@ import jakarta.persistence.TableGenerator;
 public class BoardVo {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)	
+	//@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // MySQL에서 자동 증가를 위한 설정
 	private int num;
 	private int group_num;
 	@PrePersist

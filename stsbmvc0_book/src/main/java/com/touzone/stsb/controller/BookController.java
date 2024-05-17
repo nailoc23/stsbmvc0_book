@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -87,5 +88,18 @@ public class BookController {
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(map);
 	}
 	
+	
+	@CrossOrigin(origins = "http://127.0.0.1:5500")
+	@GetMapping("/booktest")
+	public @ResponseBody ResponseEntity<Map> 
+	booktest (@RequestParam("id") String id) throws JsonProcessingException{
+		
+		System.out.println("id="+id);
+		
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("result", "1");
+		
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(map);
+	}
 
 }

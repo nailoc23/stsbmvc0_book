@@ -52,7 +52,7 @@
          </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="#">주문 관리</a>
+            <a class="nav-link" href="orderlist">주문 관리</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="boardlist">게시판 관리</a>
